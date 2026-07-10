@@ -25,7 +25,7 @@
                     <td th:text="${v.idVenta}"></td>
                     <td th:text="${#temporals.format(v.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
                     <td th:text="${v.sede.nombre}"></td>
-                    <td th:text="${v.detalle.size()}"></td>
+                    <td th:text="${v.totalItems}"></td>
                     <td th:text="'S/ ' + ${v.total}"></td>
                 </tr>
             </tbody>

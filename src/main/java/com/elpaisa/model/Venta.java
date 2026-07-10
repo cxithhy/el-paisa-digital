@@ -36,4 +36,13 @@ public class Venta {
 
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetalleVenta> detalle = new ArrayList<>();
+
+    /**
+     * Cantidad total de platos vendidos (suma las cantidades de cada linea),
+     * a diferencia de detalle.size() que solo cuenta cuantos productos distintos hay.
+     * No es un campo persistido, se calcula al vuelo.
+     */
+    public int getTotalItems() {
+        return detalle.stream().mapToInt(DetalleVenta::getCantidad).sum();
+    }
 }
