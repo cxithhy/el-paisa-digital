@@ -96,10 +96,13 @@
         <!-- 4) Logback: ya viene incluido transitivamente vía spring-boot-starter-logging,
              se configura explicitamente en logback-spring.xml -->
 
-        <!-- Lombok: reduce boilerplate en entidades (getters/setters/constructores) -->
+        <!-- Lombok: reduce boilerplate en entidades (getters/setters/constructores).
+             Version forzada porque la que trae spring-boot-starter-parent 3.2.5 (1.18.30)
+             no soporta correctamente Java 23. -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.34</version>
             <optional>true</optional>
         </dependency>
 
@@ -118,6 +121,19 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.34</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
