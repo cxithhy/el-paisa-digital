@@ -1,0 +1,15 @@
+<!-- Fragmento de barra superior reutilizado en todas las vistas internas -->
+<div th:fragment="topbar" class="topbar">
+    <div class="marca">El Paisa <span class="acento">Digital</span></div>
+    <nav>
+        <a th:href="@{/dashboard}">Inicio</a>
+        <a th:href="@{/ventas/nueva}">Nueva Venta</a>
+        <a th:href="@{/ventas}">Ventas</a>
+        <a th:href="@{/productos}">Productos</a>
+        <a th:href="@{/insumos}">Insumos</a>
+        <a th:href="@{/reportes/ventas/excel}">Reporte Excel</a>
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" class="logout">Salir</button>
+        </form>
+    </nav>
+</div>

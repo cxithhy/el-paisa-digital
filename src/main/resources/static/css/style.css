@@ -1,0 +1,251 @@
+/* El Paisa Digital - identidad visual: costa norte de Trujillo, mariscos y ceviche.
+   Paleta: teal profundo (mar) + naranja aji (acento) + crema (arena) */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+    --mar-profundo: #0E3B3E;
+    --mar-medio: #1B5E61;
+    --aji: #D6572C;
+    --aji-suave: #F2A65A;
+    --arena: #FBF6EC;
+    --texto: #1C2626;
+    --texto-suave: #5C6B6B;
+    --borde: #DDE4DE;
+    --blanco: #FFFFFF;
+    --alerta: #B3261E;
+    --exito: #2E7D5B;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--arena);
+    color: var(--texto);
+}
+
+h1, h2, h3 {
+    font-family: 'Fraunces', serif;
+    color: var(--mar-profundo);
+    margin: 0 0 0.4em 0;
+}
+
+.topbar {
+    background: var(--mar-profundo);
+    color: var(--arena);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+.topbar .marca {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.topbar .marca .acento { color: var(--aji-suave); }
+
+.topbar nav a {
+    color: var(--arena);
+    text-decoration: none;
+    margin-left: 1.5rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.15s ease;
+}
+
+.topbar nav a:hover { border-color: var(--aji-suave); }
+
+.topbar form { margin: 0; }
+
+.topbar button.logout {
+    background: transparent;
+    border: 1px solid var(--mar-medio);
+    color: var(--arena);
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.contenedor {
+    max-width: 1100px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem;
+}
+
+.encabezado-pagina {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--borde);
+    padding-bottom: 1rem;
+}
+
+.encabezado-pagina p { color: var(--texto-suave); margin: 0.2rem 0 0 0; }
+
+.btn {
+    display: inline-block;
+    background: var(--aji);
+    color: var(--blanco);
+    padding: 0.65rem 1.3rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background 0.15s ease;
+}
+
+.btn:hover { background: #B5461F; }
+
+.btn-secundario {
+    background: transparent;
+    color: var(--mar-profundo);
+    border: 1.5px solid var(--mar-profundo);
+}
+.btn-secundario:hover { background: var(--mar-profundo); color: var(--arena); }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--blanco);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(14, 59, 62, 0.08);
+}
+
+th {
+    background: var(--mar-profundo);
+    color: var(--arena);
+    text-align: left;
+    padding: 0.8rem 1rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+td {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--borde);
+    font-size: 0.95rem;
+}
+
+tr:last-child td { border-bottom: none; }
+
+.badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+.badge-bajo { background: #FBE4E1; color: var(--alerta); }
+.badge-ok { background: #E1F0E7; color: var(--exito); }
+
+.tarjetas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.tarjeta {
+    background: var(--blanco);
+    border-radius: 12px;
+    padding: 1.4rem;
+    box-shadow: 0 1px 3px rgba(14, 59, 62, 0.08);
+    border-left: 4px solid var(--aji);
+    text-decoration: none;
+    color: var(--texto);
+    display: block;
+}
+
+.tarjeta h3 { margin-bottom: 0.3rem; font-size: 1.1rem; }
+.tarjeta p { color: var(--texto-suave); font-size: 0.88rem; margin: 0; }
+
+.formulario {
+    background: var(--blanco);
+    padding: 1.8rem;
+    border-radius: 12px;
+    max-width: 520px;
+    box-shadow: 0 1px 3px rgba(14, 59, 62, 0.08);
+}
+
+.campo { margin-bottom: 1.1rem; }
+.campo label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--mar-profundo);
+    margin-bottom: 0.35rem;
+}
+.campo input, .campo select {
+    width: 100%;
+    padding: 0.6rem 0.7rem;
+    border: 1.5px solid var(--borde);
+    border-radius: 7px;
+    font-size: 0.95rem;
+    font-family: inherit;
+}
+.campo input:focus, .campo select:focus {
+    outline: none;
+    border-color: var(--aji);
+}
+
+.linea-venta {
+    display: grid;
+    grid-template-columns: 2fr 1fr auto;
+    gap: 0.8rem;
+    align-items: end;
+    margin-bottom: 0.8rem;
+}
+
+.alerta {
+    background: #FBE4E1;
+    color: var(--alerta);
+    padding: 0.9rem 1.2rem;
+    border-radius: 8px;
+    margin-bottom: 1.2rem;
+    font-size: 0.92rem;
+}
+
+.pagina-login {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, var(--mar-profundo) 0%, var(--mar-medio) 100%);
+}
+
+.tarjeta-login {
+    background: var(--arena);
+    padding: 2.5rem 2.2rem;
+    border-radius: 14px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+}
+
+.tarjeta-login .marca-login {
+    text-align: center;
+    margin-bottom: 1.8rem;
+}
+.tarjeta-login .marca-login h1 { font-size: 1.6rem; margin-bottom: 0.2rem; }
+.tarjeta-login .marca-login span { color: var(--aji); }
+.tarjeta-login .marca-login p { color: var(--texto-suave); font-size: 0.85rem; margin: 0; }
+
+.tarjeta-login .btn { width: 100%; text-align: center; margin-top: 0.5rem; }

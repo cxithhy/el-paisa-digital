@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva venta - El Paisa Digital</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/layout :: topbar}"></div>
+    <div class="contenedor">
+        <div class="encabezado-pagina">
+            <div>
+                <h1>Registrar venta</h1>
+                <p>Al guardar, se descuenta automaticamente el stock de insumos segun la receta de cada plato (RF01 + RF02).</p>
+            </div>
+        </div>
+
+        <div class="alerta" th:if="${error}" th:text="${error}"></div>
+
+        <form class="formulario" style="max-width:640px" th:action="@{/ventas/registrar}" method="post">
+            <div class="campo">
+                <label>Sede</label>
+                <select name="idSede" required>
+                    <option th:each="s : ${sedes}" th:value="${s.idSede}" th:text="${s.nombre}"></option>
+                </select>
+            </div>
+
+            <div id="lineas">
+                <div class="linea-venta">
+                    <div class="campo" style="margin-bottom:0">
+                        <label>Producto</label>
+                        <select name="detalles[0].idProducto" required>
+                            <option th:each="p : ${productos}" th:value="${p.idProducto}"
+                                    th:text="${p.nombre} + ' - S/ ' + ${p.precio}"></option>
+                        </select>
+                    </div>
+                    <div class="campo" style="margin-bottom:0">
+                        <label>Cantidad</label>
+                        <input type="number" name="detalles[0].cantidad" min="1" value="1" required>
+                    </div>
+                    <div></div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-secundario" onclick="agregarLinea()" style="margin-bottom:1rem">+ Agregar plato</button>
+            <br>
+            <button type="submit" class="btn">Registrar venta</button>
+        </form>
+    </div>
+
+    <script th:inline="javascript">
+        var productos = /*[[${productos}]]*/ [];
+        var contador = 1;
+
+        function agregarLinea() {
+            var opciones = productos.map(function(p) {
+                return '<option value="' + p.idProducto + '">' + p.nombre + ' - S/ ' + p.precio + '</option>';
+            }).join('');
+
+            var div = document.createElement('div');
+            div.className = 'linea-venta';
+            div.innerHTML =
+                '<div class="campo" style="margin-bottom:0"><label>Producto</label>' +
+                '<select name="detalles[' + contador + '].idProducto" required>' + opciones + '</select></div>' +
+                '<div class="campo" style="margin-bottom:0"><label>Cantidad</label>' +
+                '<input type="number" name="detalles[' + contador + '].cantidad" min="1" value="1" required></div>' +
+                '<div></div>';
+
+            document.getElementById('lineas').appendChild(div);
+            contador++;
+        }
+    </script>
+</body>
+</html>

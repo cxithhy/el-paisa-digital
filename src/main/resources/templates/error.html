@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error - El Paisa Digital</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/layout :: topbar}"></div>
+    <div class="contenedor">
+        <div class="alerta" th:text="${error}"></div>
+        <a th:href="@{/dashboard}" class="btn btn-secundario">Volver al inicio</a>
+    </div>
+</body>
+</html>

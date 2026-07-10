@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo insumo - El Paisa Digital</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/layout :: topbar}"></div>
+    <div class="contenedor">
+        <div class="encabezado-pagina"><h1>Nuevo insumo</h1></div>
+
+        <form class="formulario" th:action="@{/insumos/guardar}" th:object="${insumo}" method="post">
+            <div class="campo">
+                <label>Nombre del insumo</label>
+                <input type="text" th:field="*{nombre}" required>
+            </div>
+            <div class="campo">
+                <label>Stock actual</label>
+                <input type="number" step="0.01" th:field="*{stockActual}" required>
+            </div>
+            <div class="campo">
+                <label>Stock minimo (alerta)</label>
+                <input type="number" step="0.01" th:field="*{stockMin}" required>
+            </div>
+            <button type="submit" class="btn">Guardar insumo</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Productos - El Paisa Digital</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/layout :: topbar}"></div>
+    <div class="contenedor">
+        <div class="encabezado-pagina">
+            <div>
+                <h1>Carta de productos</h1>
+                <p>Platos disponibles y su precio de venta.</p>
+            </div>
+            <a th:href="@{/productos/nuevo}" class="btn">+ Nuevo producto</a>
+        </div>
+
+        <table>
+            <thead>
+                <tr><th>ID</th><th>Nombre</th><th>Precio</th><th></th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="p : ${productos}">
+                    <td th:text="${p.idProducto}"></td>
+                    <td th:text="${p.nombre}"></td>
+                    <td th:text="'S/ ' + ${p.precio}"></td>
+                    <td><a th:href="@{'/productos/eliminar/' + ${p.idProducto}}" class="btn btn-secundario">Eliminar</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ingresar - El Paisa Digital</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="pagina-login">
+    <div class="tarjeta-login">
+        <div class="marca-login">
+            <h1>El Paisa <span>Digital</span></h1>
+            <p>Sistema de gestion gastronomica</p>
+        </div>
+
+        <div class="alerta" th:if="${param.error}">Usuario o contraseña incorrectos.</div>
+        <div class="alerta" style="background:#E1F0E7; color:#2E7D5B;" th:if="${param.logout}">Sesion cerrada correctamente.</div>
+
+        <form th:action="@{/login}" method="post">
+            <div class="campo">
+                <label for="username">Usuario</label>
+                <input type="text" id="username" name="username" autofocus required>
+            </div>
+            <div class="campo">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn">Ingresar</button>
+        </form>
+    </div>
+</body>
+</html>
