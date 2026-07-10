@@ -30,7 +30,13 @@ public class DataInitializer implements CommandLineRunner {
     @Transactional
     public void run(String... args) {
         Sede huanchaco = new Sede(null, "Huanchaco", "Av. Larco 123, Huanchaco");
+        Sede sanAndres = new Sede(null, "San Andrés", "Av. América Oeste 456, San Andrés");
+        Sede santaInes = new Sede(null, "Santa Inés", "Av. Vista Alegre 789, Santa Inés");
+        Sede santaTeresa = new Sede(null, "Santa Teresa", "Av. Prolongación César Vallejo 321, Santa Teresa");
         em.persist(huanchaco);
+        em.persist(sanAndres);
+        em.persist(santaInes);
+        em.persist(santaTeresa);
 
         Rol admin = new Rol(null, "ADMIN");
         Rol cajero = new Rol(null, "CAJERO");
