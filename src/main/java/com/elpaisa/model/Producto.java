@@ -1,5 +1,6 @@
 package com.elpaisa.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,9 @@ public class Producto {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal precio;
 
+    // @JsonIgnore evita una referencia circular (Producto -> Receta -> Producto)
+    // al serializar la lista de productos a JSON para el formulario de "Nueva venta".
+    @JsonIgnore
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Receta> receta = new ArrayList<>();
 }
