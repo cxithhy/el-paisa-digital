@@ -16,6 +16,21 @@
             <a th:href="@{/ventas/nueva}" class="btn">+ Nueva venta</a>
         </div>
 
+        <div class="tarjetas">
+            <div class="tarjeta">
+                <h3 th:text="${resumen.totalVentas}"></h3>
+                <p>Ventas registradas este mes</p>
+            </div>
+            <div class="tarjeta">
+                <h3 th:text="'S/ ' + ${resumen.ingresosTotales}"></h3>
+                <p>Ingresos totales del mes</p>
+            </div>
+            <div class="tarjeta">
+                <h3 th:text="${resumen.productoMasVendidoNombre}" style="font-size:1.1rem"></h3>
+                <p th:text="${resumen.productoMasVendidoCantidad} + ' unidades vendidas — el más pedido del mes'"></p>
+            </div>
+        </div>
+
         <table>
             <thead>
                 <tr><th>ID</th><th>Fecha</th><th>Sede</th><th>Items</th><th>Total</th></tr>
