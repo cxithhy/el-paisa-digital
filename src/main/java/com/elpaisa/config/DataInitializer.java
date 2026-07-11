@@ -29,6 +29,14 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
+        // Idempotencia: en H2 (memoria) la BD se borra en cada reinicio, pero en MySQL
+        // los datos persisten. Sin esta validacion, reiniciar la app con MySQL
+        // fallaria al intentar insertar de nuevo los mismos roles/usuarios (clave duplicada).
+        Long rolesExistentes = em.createQuery("SELECT COUNT(r) FROM Rol r", Long.class).getSingleResult();
+        if (rolesExistentes > 0) {
+            return; // Ya se cargaron los datos de prueba anteriormente, no hacer nada.
+        }
+
         Sede huanchaco = new Sede(null, "Huanchaco", "Av. Larco 123, Huanchaco");
         Sede sanAndres = new Sede(null, "San Andrés", "Av. América Oeste 456, San Andrés");
         Sede santaInes = new Sede(null, "Santa Inés", "Av. Vista Alegre 789, Santa Inés");
