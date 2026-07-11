@@ -11,7 +11,7 @@ REM            DB_NAME, DB_USER, DB_PASSWORD, (opcional) MYSQL_BIN_DIR
 REM  (ese archivo NO se sube a GitHub, ver credenciales_db.bat.ejemplo)
 REM ============================================================
 
-setlocal enabledelayedexpansion
+setlocal
 
 REM Carga las credenciales desde el archivo local (no versionado)
 if not exist "%~dp0credenciales_db.bat" (
