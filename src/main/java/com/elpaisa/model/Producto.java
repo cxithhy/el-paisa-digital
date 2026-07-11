@@ -1,6 +1,5 @@
 package com.elpaisa.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "producto")
@@ -30,9 +27,17 @@ public class Producto {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal precio;
 
-    // @JsonIgnore evita una referencia circular (Producto -> Receta -> Producto)
-    // al serializar la lista de productos a JSON para el formulario de "Nueva venta".
-    @JsonIgnore
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Receta> receta = new ArrayList<>();
+    /**
+     * Insumo principal que se descuenta del stock al vender este producto (RF02).
+     * Es opcional: si un producto no tiene insumo asociado, la venta se registra
+     * normal y simplemente no se descuenta stock de nada.
+     * Reemplaza a una tabla "receta" separada para simplificar el modelo:
+     * cada plato consume, como maximo, un insumo principal.
+     */
+    @ManyToOne
+    @JoinColumn(name = "id_insumo_principal")
+    private Insumo insumoPrincipal;
+
+    @Column(name = "cantidad_insumo_por_unidad", precision = 10, scale = 2)
+    private BigDecimal cantidadInsumoPorUnidad;
 }

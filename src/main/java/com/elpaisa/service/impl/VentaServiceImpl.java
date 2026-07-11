@@ -19,11 +19,11 @@ import java.util.List;
 
 /**
  * Implementa RF01 (registrar pedido) + RF02 (descuento automatico de inventario
- * segun receta del plato vendido).
+ * segun el insumo principal asociado al plato vendido).
  *
  * SOLID - SRP: esta clase solo se ocupa de la logica de negocio de "vender";
  * no sabe como se persiste nada en detalle (eso es responsabilidad de los DAO).
- * SOLID - DIP: depende de las abstracciones VentaDao/ProductoDao/RecetaDao/InsumoDao,
+ * SOLID - DIP: depende de las abstracciones VentaDao/ProductoDao/InsumoDao,
  * no de sus implementaciones concretas -> permite testear con mocks (TDD).
  */
 @Service
@@ -33,15 +33,13 @@ public class VentaServiceImpl implements VentaService {
 
     private final VentaDao ventaDao;
     private final ProductoDao productoDao;
-    private final RecetaDao recetaDao;
     private final InsumoDao insumoDao;
     private final SedeDao sedeDao;
 
-    public VentaServiceImpl(VentaDao ventaDao, ProductoDao productoDao, RecetaDao recetaDao,
+    public VentaServiceImpl(VentaDao ventaDao, ProductoDao productoDao,
                              InsumoDao insumoDao, SedeDao sedeDao) {
         this.ventaDao = ventaDao;
         this.productoDao = productoDao;
-        this.recetaDao = recetaDao;
         this.insumoDao = insumoDao;
         this.sedeDao = sedeDao;
     }
@@ -70,8 +68,8 @@ public class VentaServiceImpl implements VentaService {
                     .orElseThrow(() -> new RecursoNoEncontradoException(
                             "Producto no encontrado: id=" + item.getIdProducto()));
 
-            // 1) Verificar y descontar stock de insumos segun receta (RF02)
-            descontarInsumosSegunReceta(producto, item.getCantidad());
+            // 1) Verificar y descontar stock del insumo principal, si el producto tiene uno asociado (RF02)
+            descontarInsumoSiAplica(producto, item.getCantidad());
 
             // 2) Armar el detalle de venta (RF01)
             DetalleVenta detalle = new DetalleVenta();
@@ -91,27 +89,29 @@ public class VentaServiceImpl implements VentaService {
     }
 
     /**
-     * Por cada insumo de la receta del producto, valida que haya stock suficiente
-     * y lo descuenta. Si algun insumo no alcanza, se aborta toda la venta
-     * (la anotacion @Transactional revierte los cambios ya aplicados).
+     * Si el producto tiene un insumo principal asociado, valida que haya stock
+     * suficiente y lo descuenta. Si el producto no tiene insumo asociado
+     * (relacion opcional), no hace nada y la venta continua normal.
+     * Si el insumo no alcanza, se aborta toda la venta (@Transactional revierte
+     * los cambios ya aplicados en items anteriores del mismo pedido).
      */
-    private void descontarInsumosSegunReceta(Producto producto, int cantidadVendida) {
-        List<Receta> receta = recetaDao.buscarPorProducto(producto.getIdProducto());
-
-        for (Receta r : receta) {
-            Insumo insumo = r.getInsumo();
-            BigDecimal cantidadRequerida = r.getCantidad().multiply(BigDecimal.valueOf(cantidadVendida));
-
-            if (insumo.getStockActual().compareTo(cantidadRequerida) < 0) {
-                throw new StockInsuficienteException(
-                        "Stock insuficiente de '" + insumo.getNombre() + "' para preparar "
-                                + cantidadVendida + " x " + producto.getNombre()
-                                + " (disponible: " + insumo.getStockActual() + ")");
-            }
-
-            insumo.setStockActual(insumo.getStockActual().subtract(cantidadRequerida));
-            insumoDao.actualizar(insumo);
+    private void descontarInsumoSiAplica(Producto producto, int cantidadVendida) {
+        Insumo insumo = producto.getInsumoPrincipal();
+        if (insumo == null || producto.getCantidadInsumoPorUnidad() == null) {
+            return; // Producto sin insumo asociado: no hay nada que descontar.
         }
+
+        BigDecimal cantidadRequerida = producto.getCantidadInsumoPorUnidad().multiply(BigDecimal.valueOf(cantidadVendida));
+
+        if (insumo.getStockActual().compareTo(cantidadRequerida) < 0) {
+            throw new StockInsuficienteException(
+                    "Stock insuficiente de '" + insumo.getNombre() + "' para preparar "
+                            + cantidadVendida + " x " + producto.getNombre()
+                            + " (disponible: " + insumo.getStockActual() + ")");
+        }
+
+        insumo.setStockActual(insumo.getStockActual().subtract(cantidadRequerida));
+        insumoDao.actualizar(insumo);
     }
 
     @Override

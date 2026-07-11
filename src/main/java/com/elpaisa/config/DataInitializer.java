@@ -64,12 +64,8 @@ public class DataInitializer implements CommandLineRunner {
         em.persist(pescado);
         em.persist(limon);
 
-        Producto ceviche = new Producto(null, "Ceviche El Paisa", new BigDecimal("35.00"), null);
+        // El insumo principal se asocia directamente en el producto (sin tabla receta aparte).
+        Producto ceviche = new Producto(null, "Ceviche El Paisa", new BigDecimal("35.00"), pescado, new BigDecimal("0.30"));
         em.persist(ceviche);
-
-        Receta recetaPescado = new Receta(null, ceviche, pescado, new BigDecimal("0.30"));
-        Receta recetaLimon = new Receta(null, ceviche, limon, new BigDecimal("0.15"));
-        em.persist(recetaPescado);
-        em.persist(recetaLimon);
     }
 }

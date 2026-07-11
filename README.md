@@ -34,7 +34,7 @@ Sistema de Gestión y Plataforma Web Integral — Curso Integrador I: Sistemas S
 ## 3. Funcionalidad cubierta en este avance (~35-40%)
 
 - ✅ RF01: Registro de pedidos digitales vinculados a una sede.
-- ✅ RF02: Descuento automático de inventario según receta del plato vendido.
+- ✅ RF02: Descuento automático de inventario según el insumo principal asociado a cada plato (relación opcional producto→insumo, sin tabla intermedia).
 - ✅ RF04: Reporte de ventas exportable a Excel.
 - ✅ RNF01: Seguridad por roles y contraseñas cifradas.
 - 🔜 RF03 (reservas online), RF05 (asistencia de personal): planificados para el Avance Final.

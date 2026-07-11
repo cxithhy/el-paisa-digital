@@ -24,8 +24,8 @@ import static org.mockito.Mockito.*;
 
 /**
  * TDD - Pruebas unitarias de la regla de negocio mas critica del sistema:
- * el registro de una venta debe descontar el inventario segun receta (RF02)
- * y rechazar la venta si no hay stock suficiente.
+ * el registro de una venta debe descontar el inventario del insumo principal
+ * asociado al producto (RF02) y rechazar la venta si no hay stock suficiente.
  *
  * Se usan mocks de los DAO (SOLID - DIP permite esto sin tocar base de datos real).
  */
@@ -35,7 +35,6 @@ class VentaServiceImplTest {
 
     @Mock private VentaDao ventaDao;
     @Mock private ProductoDao productoDao;
-    @Mock private RecetaDao recetaDao;
     @Mock private InsumoDao insumoDao;
     @Mock private SedeDao sedeDao;
 
@@ -44,34 +43,34 @@ class VentaServiceImplTest {
 
     private Sede sede;
     private Producto ceviche;
+    private Producto limonada; // producto SIN insumo asociado, para probar el caso opcional
     private Insumo pescado;
-    private Receta recetaPescado;
 
     @BeforeEach
     void setUp() {
         sede = new Sede(1, "Huanchaco", "Av. Larco 123");
-        ceviche = new Producto(1, "Ceviche El Paisa", new BigDecimal("35.00"), null);
         pescado = new Insumo(1, "Pescado (kg)", new BigDecimal("10.00"), new BigDecimal("5.00"));
-        recetaPescado = new Receta(1, ceviche, pescado, new BigDecimal("0.30"));
+
+        // Ceviche SI tiene insumo principal asociado (0.30 kg de pescado por unidad)
+        ceviche = new Producto(1, "Ceviche El Paisa", new BigDecimal("35.00"), pescado, new BigDecimal("0.30"));
+
+        // Limonada NO tiene insumo asociado (relacion opcional)
+        limonada = new Producto(2, "Limonada", new BigDecimal("8.00"), null, null);
     }
 
     @Test
-    @DisplayName("Debe registrar la venta y descontar el stock correctamente cuando hay insumos suficientes")
-    void registrarVenta_conStockSuficiente_descuentaInventario() {
-        // Arrange
+    @DisplayName("Debe registrar la venta y descontar el stock correctamente cuando el producto tiene insumo asociado")
+    void registrarVenta_conInsumoAsociadoYStockSuficiente_descuentaInventario() {
         VentaRequest request = new VentaRequest();
         request.setIdSede(1);
         request.setDetalles(List.of(new DetalleVentaRequest(1, 2))); // 2 ceviches
 
         when(sedeDao.buscarPorId(1)).thenReturn(Optional.of(sede));
         when(productoDao.buscarPorId(1)).thenReturn(Optional.of(ceviche));
-        when(recetaDao.buscarPorProducto(1)).thenReturn(List.of(recetaPescado));
         when(ventaDao.guardar(any(Venta.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        // Act
         Venta resultado = ventaService.registrarVenta(request);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(0, new BigDecimal("70.00").compareTo(resultado.getTotal())); // 2 x 35.00
         // 2 ceviches x 0.30 kg = 0.60 kg descontados de 10.00 -> queda 9.40
@@ -81,18 +80,35 @@ class VentaServiceImplTest {
     }
 
     @Test
-    @DisplayName("Debe rechazar la venta cuando el insumo no alcanza para la cantidad pedida")
+    @DisplayName("Debe registrar la venta normalmente cuando el producto NO tiene insumo asociado")
+    void registrarVenta_sinInsumoAsociado_noDescuentaNadaYRegistraIgual() {
+        VentaRequest request = new VentaRequest();
+        request.setIdSede(1);
+        request.setDetalles(List.of(new DetalleVentaRequest(2, 3))); // 3 limonadas
+
+        when(sedeDao.buscarPorId(1)).thenReturn(Optional.of(sede));
+        when(productoDao.buscarPorId(2)).thenReturn(Optional.of(limonada));
+        when(ventaDao.guardar(any(Venta.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        Venta resultado = ventaService.registrarVenta(request);
+
+        assertNotNull(resultado);
+        assertEquals(0, new BigDecimal("24.00").compareTo(resultado.getTotal())); // 3 x 8.00
+        verifyNoInteractions(insumoDao); // no debe tocar ningun insumo
+        verify(ventaDao, times(1)).guardar(any(Venta.class));
+    }
+
+    @Test
+    @DisplayName("Debe rechazar la venta cuando el insumo asociado no alcanza para la cantidad pedida")
     void registrarVenta_conStockInsuficiente_lanzaExcepcionYNoGuardaNada() {
-        // Arrange: se piden 40 ceviches (requieren 12.0 kg de pescado, solo hay 10.0 kg)
+        // Se piden 40 ceviches (requieren 12.0 kg de pescado, solo hay 10.0 kg)
         VentaRequest request = new VentaRequest();
         request.setIdSede(1);
         request.setDetalles(List.of(new DetalleVentaRequest(1, 40)));
 
         when(sedeDao.buscarPorId(1)).thenReturn(Optional.of(sede));
         when(productoDao.buscarPorId(1)).thenReturn(Optional.of(ceviche));
-        when(recetaDao.buscarPorProducto(1)).thenReturn(List.of(recetaPescado));
 
-        // Act + Assert
         assertThrows(StockInsuficienteException.class, () -> ventaService.registrarVenta(request));
 
         // El stock no debe alterarse y la venta no debe persistirse
