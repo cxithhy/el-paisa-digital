@@ -76,4 +76,16 @@ class SecurityWebIntegrationTest {
     void nuevaVenta_comoMozo_accedeCorrectamente() throws Exception {
         mockMvc.perform(get("/ventas/nueva")).andExpect(status().isOk());
     }
+
+    @Test
+    @DisplayName("El health check de Actuator debe ser publico, para que un monitor externo pueda verificarlo sin autenticarse")
+    void actuatorHealth_esPublico() throws Exception {
+        mockMvc.perform(get("/actuator/health")).andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("PRUEBA DE SEGURIDAD: las metricas detalladas de Actuator NO deben ser publicas (solo ADMIN)")
+    void actuatorMetrics_sinAutenticar_noEsAccesible() throws Exception {
+        mockMvc.perform(get("/actuator/metrics")).andExpect(status().is3xxRedirection());
+    }
 }
