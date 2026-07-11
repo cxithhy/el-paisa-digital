@@ -5,7 +5,7 @@
     <title>Inicio - El Paisa Digital</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body>
+<body xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div th:replace="~{fragments/layout :: topbar}"></div>
     <div class="contenedor">
         <div class="encabezado-pagina">
@@ -20,15 +20,15 @@
                 <h3>Registrar venta</h3>
                 <p>Toma el pedido y descuenta el inventario automaticamente.</p>
             </a>
-            <a th:href="@{/productos}" class="tarjeta">
+            <a th:href="@{/productos}" class="tarjeta" sec:authorize="hasRole('ADMIN')">
                 <h3>Productos</h3>
                 <p>Administra la carta y sus precios.</p>
             </a>
-            <a th:href="@{/insumos}" class="tarjeta">
+            <a th:href="@{/insumos}" class="tarjeta" sec:authorize="hasRole('ADMIN')">
                 <h3>Insumos</h3>
                 <p>Controla el stock de pescados, mariscos y demas insumos.</p>
             </a>
-            <a th:href="@{/reportes/ventas/excel}" class="tarjeta">
+            <a th:href="@{/reportes/ventas/excel}" class="tarjeta" sec:authorize="hasAnyRole('ADMIN','CAJERO')">
                 <h3>Reporte de ventas</h3>
                 <p>Descarga el reporte del ultimo mes en Excel.</p>
             </a>

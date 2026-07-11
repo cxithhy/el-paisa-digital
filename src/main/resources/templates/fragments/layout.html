@@ -1,13 +1,13 @@
 <!-- Fragmento de barra superior reutilizado en todas las vistas internas -->
-<div th:fragment="topbar" class="topbar">
+<div th:fragment="topbar" class="topbar" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div class="marca">El Paisa <span class="acento">Digital</span></div>
     <nav>
         <a th:href="@{/dashboard}">Inicio</a>
         <a th:href="@{/ventas/nueva}">Nueva Venta</a>
         <a th:href="@{/ventas}">Ventas</a>
-        <a th:href="@{/productos}">Productos</a>
-        <a th:href="@{/insumos}">Insumos</a>
-        <a th:href="@{/reportes/ventas/excel}">Reporte Excel</a>
+        <a th:href="@{/productos}" sec:authorize="hasRole('ADMIN')">Productos</a>
+        <a th:href="@{/insumos}" sec:authorize="hasRole('ADMIN')">Insumos</a>
+        <a th:href="@{/reportes/ventas/excel}" sec:authorize="hasAnyRole('ADMIN','CAJERO')">Reporte Excel</a>
         <form th:action="@{/logout}" method="post" style="display:inline">
             <button type="submit" class="logout">Salir</button>
         </form>
