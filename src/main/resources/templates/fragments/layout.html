@@ -1,6 +1,8 @@
 <!-- Fragmento de barra superior reutilizado en todas las vistas internas -->
 <div th:fragment="topbar" class="topbar" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <div class="marca">El Paisa <span class="acento">Digital</span></div>
+    <a th:href="@{/dashboard}" class="marca">
+        <img th:src="@{/img/logo-elpaisa.png}" alt="El Paisa Restaurant Turístico" class="logo-marca">
+    </a>
     <nav>
         <a th:href="@{/dashboard}">Inicio</a>
         <a th:href="@{/ventas/nueva}">Nueva Venta</a>

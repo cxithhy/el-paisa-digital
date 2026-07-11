@@ -43,16 +43,19 @@ h1, h2, h3 {
 }
 
 .topbar .marca {
-    font-family: 'Fraunces', serif;
-    font-weight: 700;
-    font-size: 1.3rem;
-    letter-spacing: 0.02em;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    text-decoration: none;
 }
 
-.topbar .marca .acento { color: var(--aji-suave); }
+.topbar .logo-marca {
+    height: 44px;
+    width: auto;
+    display: block;
+    background: var(--arena);
+    border-radius: 8px;
+    padding: 4px 10px;
+}
 
 .topbar nav a {
     color: var(--arena);
@@ -244,8 +247,11 @@ tr:last-child td { border-bottom: none; }
     text-align: center;
     margin-bottom: 1.8rem;
 }
-.tarjeta-login .marca-login h1 { font-size: 1.6rem; margin-bottom: 0.2rem; }
-.tarjeta-login .marca-login span { color: var(--aji); }
+.tarjeta-login .logo-login {
+    max-width: 220px;
+    height: auto;
+    margin-bottom: 0.6rem;
+}
 .tarjeta-login .marca-login p { color: var(--texto-suave); font-size: 0.85rem; margin: 0; }
 
 .tarjeta-login .btn { width: 100%; text-align: center; margin-top: 0.5rem; }
