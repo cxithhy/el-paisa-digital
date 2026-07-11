@@ -8,3 +8,7 @@ target/
 application-local.properties
 *.jar
 !.mvn/wrapper/maven-wrapper.jar
+
+# Mantenimiento: nunca subir credenciales reales ni los dumps de backup
+scripts/credenciales_db.bat
+backups/

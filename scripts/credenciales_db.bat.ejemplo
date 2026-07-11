@@ -1,0 +1,6 @@
+@echo off
+REM Copia este archivo como "credenciales_db.bat" (sin .ejemplo) en la misma carpeta
+REM y completa tus datos reales. Ese archivo NO se sube a GitHub (ver .gitignore).
+set DB_NAME=elpaisadb
+set DB_USER=root
+set DB_PASSWORD=TU_PASSWORD_AQUI
