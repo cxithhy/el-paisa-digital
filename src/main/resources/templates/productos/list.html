@@ -25,7 +25,11 @@
                     <td th:text="${p.idProducto}"></td>
                     <td th:text="${p.nombre}"></td>
                     <td th:text="'S/ ' + ${p.precio}"></td>
-                    <td><a th:href="@{'/productos/eliminar/' + ${p.idProducto}}" class="btn btn-secundario">Eliminar</a></td>
+                    <td>
+                        <a th:href="@{'/productos/editar/' + ${p.idProducto}}" class="btn btn-secundario">Editar</a>
+                        <a th:href="@{'/productos/eliminar/' + ${p.idProducto}}" class="btn btn-secundario"
+                           onclick="return confirm('¿Eliminar este producto?');">Eliminar</a>
+                    </td>
                 </tr>
             </tbody>
         </table>

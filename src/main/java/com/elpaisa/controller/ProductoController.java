@@ -28,9 +28,20 @@ public class ProductoController {
         return "productos/form";
     }
 
+    @GetMapping("/editar/{id}")
+    public String formularioEditar(@PathVariable Integer id, Model model) {
+        model.addAttribute("producto", productoService.obtenerPorId(id));
+        return "productos/form";
+    }
+
     @PostMapping("/guardar")
     public String guardar(@ModelAttribute Producto producto) {
-        productoService.crear(producto);
+        // Si el formulario trae un id, es una edicion; si no, es un producto nuevo.
+        if (producto.getIdProducto() == null) {
+            productoService.crear(producto);
+        } else {
+            productoService.actualizar(producto);
+        }
         return "redirect:/productos";
     }
 
