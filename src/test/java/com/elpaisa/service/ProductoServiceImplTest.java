@@ -34,7 +34,7 @@ class ProductoServiceImplTest {
     @Test
     @DisplayName("Debe rechazar un producto con precio negativo o cero")
     void crear_conPrecioInvalido_lanzaExcepcion() {
-        Producto producto = new Producto(null, "Ceviche Mixto", BigDecimal.ZERO, null);
+        Producto producto = new Producto(null, "Ceviche Mixto", BigDecimal.ZERO, null, null);
 
         assertThrows(IllegalArgumentException.class, () -> productoService.crear(producto));
     }
@@ -42,7 +42,7 @@ class ProductoServiceImplTest {
     @Test
     @DisplayName("Debe rechazar un producto con nombre vacio")
     void crear_conNombreVacio_lanzaExcepcion() {
-        Producto producto = new Producto(null, "   ", new BigDecimal("20.00"), null);
+        Producto producto = new Producto(null, "   ", new BigDecimal("20.00"), null, null);
 
         assertThrows(IllegalArgumentException.class, () -> productoService.crear(producto));
     }
