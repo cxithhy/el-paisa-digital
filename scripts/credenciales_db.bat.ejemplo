@@ -4,3 +4,8 @@ REM y completa tus datos reales. Ese archivo NO se sube a GitHub (ver .gitignore
 set DB_NAME=elpaisadb
 set DB_USER=root
 set DB_PASSWORD=TU_PASSWORD_AQUI
+
+REM OPCIONAL: si el comando "mysqldump" no se reconoce en tu terminal,
+REM descomenta la siguiente linea y pon la carpeta "bin" donde instalaste MySQL
+REM (usa el comando "where /r "C:\Program Files\MySQL" mysqldump.exe" para encontrarla).
+REM set MYSQL_BIN_DIR=C:\Program Files\MySQL\MySQL Server 8.0\bin

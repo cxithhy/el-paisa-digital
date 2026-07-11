@@ -19,6 +19,12 @@ if not exist "%~dp0credenciales_db.bat" (
 )
 call "%~dp0credenciales_db.bat"
 
+if defined MYSQL_BIN_DIR (
+    set MYSQL_EXE="%MYSQL_BIN_DIR%\mysql.exe"
+) else (
+    set MYSQL_EXE=mysql
+)
+
 set ARCHIVO=%~dp0..\backups\%~1
 
 if not exist "%ARCHIVO%" (
@@ -33,7 +39,7 @@ if /I not "%CONFIRMAR%"=="SI" (
     exit /b 0
 )
 
-mysql -u%DB_USER% -p%DB_PASSWORD% %DB_NAME% < "%ARCHIVO%"
+%MYSQL_EXE% -u%DB_USER% -p%DB_PASSWORD% %DB_NAME% < "%ARCHIVO%"
 
 if %ERRORLEVEL% EQU 0 (
     echo [OK] Base de datos restaurada desde %~1
