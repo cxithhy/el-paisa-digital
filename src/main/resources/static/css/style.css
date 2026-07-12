@@ -70,6 +70,59 @@ h1, h2, h3 {
 
 .topbar nav a:hover { border-color: var(--aji-suave); }
 
+.topbar .sesion-usuario {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-left: 1.6rem;
+    padding: 0.35rem 0.9rem;
+    background: rgba(251, 246, 236, 0.08);
+    border: 1px solid var(--mar-medio);
+    border-radius: 999px;
+}
+
+.topbar .sesion-icono {
+    font-size: 1rem;
+    line-height: 1;
+    filter: grayscale(1) brightness(1.8);
+}
+
+.topbar .sesion-textos {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+}
+
+.topbar .sesion-nombre {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--arena);
+}
+
+.topbar .sesion-detalle {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+}
+
+.topbar .sesion-sede {
+    color: #9FB8B9;
+}
+
+.badge-rol {
+    display: inline-block;
+    padding: 0.05rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: var(--blanco);
+}
+.badge-rol-admin { background: var(--aji); }
+.badge-rol-cajero { background: #3D8B7A; }
+.badge-rol-mozo { background: #5C7A8A; }
+
 .topbar form { margin: 0; }
 
 .topbar button.logout {

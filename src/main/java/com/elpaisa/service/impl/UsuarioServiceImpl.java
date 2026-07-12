@@ -2,12 +2,11 @@ package com.elpaisa.service.impl;
 
 import com.elpaisa.dao.UsuarioDao;
 import com.elpaisa.model.Usuario;
+import com.elpaisa.security.UsuarioPrincipal;
 import com.elpaisa.service.UsuarioService;
 import com.elpaisa.util.ValidacionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,10 +50,8 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new UsernameNotFoundException("Usuario inactivo: " + username);
         }
 
-        return User.builder()
-                .username(usuario.getUsername())
-                .password(usuario.getPassword())
-                .authorities(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre()))
-                .build();
+        // UsuarioPrincipal (en vez del User generico de Spring) para poder mostrar
+        // en la interfaz el rol y la sede de quien esta logueado, sin consultas extra.
+        return new UsuarioPrincipal(usuario);
     }
 }

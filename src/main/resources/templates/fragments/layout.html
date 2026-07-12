@@ -11,6 +11,20 @@
         <a th:href="@{/productos}" sec:authorize="hasRole('ADMIN')">Productos</a>
         <a th:href="@{/insumos}" sec:authorize="hasRole('ADMIN')">Insumos</a>
         <a th:href="@{/reportes/ventas/excel}" sec:authorize="hasAnyRole('ADMIN','CAJERO')">Reporte Excel</a>
+
+        <div class="sesion-usuario">
+            <span class="sesion-icono">👤</span>
+            <div class="sesion-textos">
+                <span class="sesion-nombre" sec:authentication="principal.username">usuario</span>
+                <span class="sesion-detalle">
+                    <span class="badge-rol badge-rol-admin" sec:authorize="hasRole('ADMIN')">ADMIN</span>
+                    <span class="badge-rol badge-rol-cajero" sec:authorize="hasRole('CAJERO')">CAJERO</span>
+                    <span class="badge-rol badge-rol-mozo" sec:authorize="hasRole('MOZO')">MOZO</span>
+                    <span class="sesion-sede" sec:authentication="principal.nombreSede">Sede</span>
+                </span>
+            </div>
+        </div>
+
         <form th:action="@{/logout}" method="post" style="display:inline">
             <button type="submit" class="logout">Salir</button>
         </form>
