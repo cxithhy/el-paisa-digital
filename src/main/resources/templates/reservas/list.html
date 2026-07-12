@@ -16,12 +16,18 @@
             <a th:href="@{/reservas/nueva}" class="btn">+ Nueva reserva</a>
         </div>
 
+        <label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem; font-size:0.9rem; color:#5C6B6B; cursor:pointer;">
+            <input type="checkbox" id="chkMostrarCanceladas" onchange="filtrarCanceladas()">
+            Mostrar reservas canceladas
+            <span style="color:#8A9494;">(se mantienen guardadas en el sistema, solo se ocultan de esta vista por defecto)</span>
+        </label>
+
         <table>
             <thead>
                 <tr><th>Cliente</th><th>Telefono</th><th>Sede</th><th>Fecha y hora</th><th>Personas</th><th>Estado</th><th></th></tr>
             </thead>
             <tbody>
-                <tr th:each="r : ${reservas}">
+                <tr th:each="r : ${reservas}" th:classappend="${r.estado == 'CANCELADA'} ? 'fila-cancelada'">
                     <td th:text="${r.nombreCliente}"></td>
                     <td th:text="${r.telefonoCliente}"></td>
                     <td th:text="${r.sede.nombre}"></td>
@@ -40,5 +46,17 @@
             </tbody>
         </table>
     </div>
+
+    <script>
+        // Filtro visual: las reservas canceladas se mantienen en la base de datos,
+        // solo se ocultan/muestran en esta tabla segun el checkbox (por defecto ocultas).
+        function filtrarCanceladas() {
+            var mostrar = document.getElementById('chkMostrarCanceladas').checked;
+            document.querySelectorAll('.fila-cancelada').forEach(function (fila) {
+                fila.style.display = mostrar ? '' : 'none';
+            });
+        }
+        filtrarCanceladas();
+    </script>
 </body>
 </html>

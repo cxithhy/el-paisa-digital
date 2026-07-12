@@ -59,6 +59,9 @@ public class DataInitializer implements CommandLineRunner {
         Usuario userCajero = new Usuario(null, "cajero1", null, cajero, huanchaco, true);
         usuarioService.crear(userCajero, "cajero123");
 
+        Usuario userMozo = new Usuario(null, "mozo1", null, mozo, huanchaco, true);
+        usuarioService.crear(userMozo, "mozo123");
+
         Insumo pescado = new Insumo(null, "Pescado (kg)", new BigDecimal("50.00"), new BigDecimal("5.00"));
         Insumo limon = new Insumo(null, "Limon (kg)", new BigDecimal("20.00"), new BigDecimal("3.00"));
         em.persist(pescado);
