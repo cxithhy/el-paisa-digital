@@ -20,6 +20,10 @@
                 <h3>Registrar venta</h3>
                 <p>Toma el pedido y descuenta el inventario automaticamente.</p>
             </a>
+            <a th:href="@{/reservas}" class="tarjeta">
+                <h3>Reservas</h3>
+                <p>Gestiona las reservas de mesa de todas las sedes.</p>
+            </a>
             <a th:href="@{/productos}" class="tarjeta" sec:authorize="hasRole('ADMIN')">
                 <h3>Productos</h3>
                 <p>Administra la carta y sus precios.</p>
