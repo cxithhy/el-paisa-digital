@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservas - El Paisa Digital</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/layout :: topbar}"></div>
+    <div class="contenedor">
+        <div class="encabezado-pagina">
+            <div>
+                <h1>Reservas</h1>
+                <p>Historial completo de reservas (pasadas y futuras).</p>
+            </div>
+            <a th:href="@{/reservas/nueva}" class="btn">+ Nueva reserva</a>
+        </div>
+
+        <table>
+            <thead>
+                <tr><th>Cliente</th><th>Telefono</th><th>Sede</th><th>Fecha y hora</th><th>Personas</th><th>Estado</th><th></th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="r : ${reservas}">
+                    <td th:text="${r.nombreCliente}"></td>
+                    <td th:text="${r.telefonoCliente}"></td>
+                    <td th:text="${r.sede.nombre}"></td>
+                    <td th:text="${#temporals.format(r.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${r.numeroPersonas}"></td>
+                    <td>
+                        <span th:if="${r.estado == 'PENDIENTE'}" class="badge badge-bajo">Pendiente</span>
+                        <span th:if="${r.estado == 'CONFIRMADA'}" class="badge badge-ok">Confirmada</span>
+                        <span th:if="${r.estado == 'CANCELADA'}" class="badge" style="background:#eee;color:#888">Cancelada</span>
+                    </td>
+                    <td>
+                        <a th:if="${r.estado == 'PENDIENTE'}" th:href="@{'/reservas/confirmar/' + ${r.idReserva}}" class="btn btn-secundario">Confirmar</a>
+                        <a th:if="${r.estado != 'CANCELADA'}" th:href="@{'/reservas/cancelar/' + ${r.idReserva}}" class="btn btn-secundario">Cancelar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

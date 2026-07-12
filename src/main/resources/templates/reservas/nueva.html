@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva reserva - El Paisa Digital</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/layout :: topbar}"></div>
+    <div class="contenedor">
+        <div class="encabezado-pagina"><h1>Nueva reserva</h1></div>
+
+        <div class="alerta" th:if="${error}" th:text="${error}"></div>
+
+        <form class="formulario" th:action="@{/reservas/guardar}" th:object="${reserva}" method="post">
+            <div class="campo">
+                <label>Nombre del cliente</label>
+                <input type="text" th:field="*{nombreCliente}" required>
+            </div>
+            <div class="campo">
+                <label>Telefono (celular peruano: empieza en 9, 9 digitos)</label>
+                <input type="text" th:field="*{telefonoCliente}" pattern="9[0-9]{8}" maxlength="9"
+                       title="Debe empezar con 9 y tener exactamente 9 digitos, ej. 987654321" required>
+            </div>
+            <div class="campo">
+                <label>Sede</label>
+                <select name="idSede" id="selectSede" required>
+                    <option th:each="s : ${sedes}" th:value="${s.idSede}" th:text="${s.nombre}"></option>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Fecha y hora (mínimo un día de anticipación)</label>
+                <input type="datetime-local" id="fechaHora" th:field="*{fechaHora}" required>
+                <small id="ayudaHorario" style="color:#5C6B6B; display:block; margin-top:0.3rem;">
+                    Horario: 8:00 am - 5:00 pm (Huanchaco abre a las 9:00 am)
+                </small>
+            </div>
+            <div class="campo">
+                <label>Numero de personas</label>
+                <input type="number" min="1" th:field="*{numeroPersonas}" required>
+            </div>
+            <div class="campo">
+                <label>Observaciones (opcional)</label>
+                <input type="text" th:field="*{observaciones}" placeholder="Ej. mesa junto a la ventana">
+            </div>
+            <button type="submit" class="btn">Registrar reserva</button>
+        </form>
+    </div>
+
+    <script>
+        // Fecha minima seleccionable: manana (al menos un dia de anticipacion)
+        var manana = new Date();
+        manana.setDate(manana.getDate() + 1);
+        var yyyy = manana.getFullYear();
+        var mm = String(manana.getMonth() + 1).padStart(2, '0');
+        var dd = String(manana.getDate()).padStart(2, '0');
+        document.getElementById('fechaHora').min = yyyy + '-' + mm + '-' + dd + 'T00:00';
+    </script>
+</body>
+</html>
