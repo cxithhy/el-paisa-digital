@@ -3,19 +3,28 @@
     <a th:href="@{/dashboard}" class="marca">
         <img th:src="@{/img/logo-elpaisa.png}" alt="El Paisa Restaurant Turístico" class="logo-marca">
     </a>
-    <nav>
-        <a th:href="@{/dashboard}">Inicio</a>
-        <a th:href="@{/ventas/nueva}">Nueva Venta</a>
-        <a th:href="@{/ventas}">Ventas</a>
-        <a th:href="@{/reservas}">Reservas</a>
-        <a th:href="@{/productos}" sec:authorize="hasRole('ADMIN')">Productos</a>
-        <a th:href="@{/insumos}" sec:authorize="hasRole('ADMIN')">Insumos</a>
-        <a th:href="@{/reportes/ventas/excel}" sec:authorize="hasAnyRole('ADMIN','CAJERO')">Reporte Excel</a>
+
+    <nav class="nav-principal">
+        <a th:href="@{/dashboard}"><span>Inicio</span></a>
+        <a th:href="@{/ventas/nueva}"><span>Nueva Venta</span></a>
+        <a th:href="@{/ventas}"><span>Ventas</span></a>
+        <a th:href="@{/reservas}"><span>Reservas</span></a>
+        <a th:href="@{/productos}" sec:authorize="hasRole('ADMIN')"><span>Productos</span></a>
+        <a th:href="@{/insumos}" sec:authorize="hasRole('ADMIN')"><span>Insumos</span></a>
+    </nav>
+
+    <div class="topbar-derecha">
+        <a th:href="@{/reportes/ventas/excel}" class="btn-reporte" sec:authorize="hasAnyRole('ADMIN','CAJERO')">
+            <svg class="icono-descarga" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Reporte Excel</span>
+        </a>
 
         <div class="sesion-usuario">
-            <span class="sesion-icono">👤</span>
+            <span class="sesion-avatar" id="sesionAvatar">•</span>
             <div class="sesion-textos">
-                <span class="sesion-nombre" sec:authentication="principal.username">usuario</span>
+                <span class="sesion-nombre" id="sesionNombre" sec:authentication="principal.username">usuario</span>
                 <span class="sesion-detalle">
                     <span class="badge-rol badge-rol-admin" sec:authorize="hasRole('ADMIN')">ADMIN</span>
                     <span class="badge-rol badge-rol-cajero" sec:authorize="hasRole('CAJERO')">CAJERO</span>
@@ -26,7 +35,20 @@
         </div>
 
         <form th:action="@{/logout}" method="post" style="display:inline">
-            <button type="submit" class="logout">Salir</button>
+            <button type="submit" class="logout" title="Cerrar sesión">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
         </form>
-    </nav>
+    </div>
+
+    <script>
+        // Muestra solo la inicial del usuario en el circulo del avatar
+        var elNombre = document.getElementById('sesionNombre');
+        var elAvatar = document.getElementById('sesionAvatar');
+        if (elNombre && elAvatar && elNombre.textContent.trim().length > 0) {
+            elAvatar.textContent = elNombre.textContent.trim().charAt(0).toUpperCase();
+        }
+    </script>
 </div>
