@@ -21,8 +21,9 @@ mvn test
 | `VentaServiceImplTest` | Registro de venta con descuento de stock correcto; rechazo por stock insuficiente (sin alterar el inventario ni persistir la venta); rechazo de venta sin productos; venta de un producto sin insumo asociado (caso opcional) |
 | `ProductoServiceImplTest` | Rechazo de precio inválido (≤0); rechazo de nombre vacío; excepción al buscar un producto inexistente |
 | `InsumoServiceImplTest` | Rechazo de nombre vacío; cálculo correcto de insumos con stock igual o por debajo del mínimo |
+| `ReservaServiceImplTest` | Validación de teléfono peruano; validación de horario de atención por sede; anticipación mínima de un día; cambio de estado (confirmar/cancelar) |
 
-**Resultado:** 13 pruebas unitarias, todas en verde (`BUILD SUCCESS`).
+**Resultado:** 20 pruebas unitarias (Venta, Producto, Insumo, Reserva, Usuario), todas en verde (`BUILD SUCCESS`).
 
 ## 3. Pruebas de seguridad
 
@@ -71,4 +72,4 @@ Estas pruebas hacen peticiones HTTP reales (vía `MockMvc`) contra la aplicació
 
 ## 5. Conclusión
 
-El proyecto cuenta con **13 pruebas unitarias** de lógica de negocio y **7 pruebas de integración de seguridad** que verifican, contra la aplicación real (no simulada), que el control de acceso por rol funciona como está diseñado. Las prácticas de seguridad básicas (cifrado de contraseñas, prevención de inyección SQL y XSS) están correctamente implementadas; la única observación pendiente de severidad media (CSRF) queda documentada con su recomendación de remediación.
+El proyecto cuenta con **20 pruebas unitarias** de lógica de negocio y **9 pruebas de integración de seguridad** que verifican, contra la aplicación real (no simulada), que el control de acceso por rol funciona como está diseñado. Las prácticas de seguridad básicas (cifrado de contraseñas, prevención de inyección SQL y XSS) están correctamente implementadas; la única observación pendiente de severidad media (CSRF) queda documentada con su recomendación de remediación.

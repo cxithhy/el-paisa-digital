@@ -10,18 +10,18 @@ El proyecto se despliega como un **jar ejecutable autocontenido** (incluye el se
 mvn clean package
 ```
 
-Esto genera `target/elpaisadigital-0.3.0-avance3.jar`. Maven ejecuta automáticamente las pruebas antes de empaquetar (`mvn test` como parte del ciclo de vida `package`) — si alguna prueba falla, el jar no se genera, lo que evita desplegar código roto.
+Esto genera `target/elpaisadigital-1.0.0.jar`. Maven ejecuta automáticamente las pruebas antes de empaquetar (`mvn test` como parte del ciclo de vida `package`) — si alguna prueba falla, el jar no se genera, lo que evita desplegar código roto.
 
 ### 1.2 Ejecución
 
 ```bash
-java -jar target/elpaisadigital-0.3.0-avance3.jar
+java -jar target/elpaisadigital-1.0.0.jar
 ```
 
 Por defecto usa el perfil `mysql` (definido en `application.properties`), así que la base de datos `elpaisadb` debe existir y estar accesible antes de arrancar. Para otro entorno (ej. una demo rápida sin MySQL):
 
 ```bash
-java -jar target/elpaisadigital-0.3.0-avance3.jar --spring.profiles.active=h2
+java -jar target/elpaisadigital-1.0.0.jar --spring.profiles.active=h2
 ```
 
 ### 1.3 Configuración de "servidor" para este avance
@@ -52,7 +52,7 @@ Se integró `spring-boot-starter-actuator`, el estándar de facto en el ecosiste
 
 ### 2.2 Logs (Logback)
 
-Ya configurado en `logback-spring.xml` desde el Avance 3:
+Ya configurado en `logback-spring.xml`:
 - Salida a consola **y** a archivo rotado diariamente (`logs/elpaisadigital.log`, se conservan 15 días de historial)
 - El paquete `com.elpaisa` loguea en nivel `INFO`, registrando cada venta, creación de usuario, y error de negocio (stock insuficiente, recurso no encontrado)
 

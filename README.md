@@ -1,4 +1,4 @@
-# El Paisa Digital — Avance de Proyecto Final 3
+# El Paisa Digital — Proyecto Final
 
 Sistema de Gestión y Plataforma Web Integral — Curso Integrador I: Sistemas Software
 
@@ -31,33 +31,40 @@ Sistema de Gestión y Plataforma Web Integral — Curso Integrador I: Sistemas S
 | **Apache Commons Lang3** | `StringUtils.isBlank` en `ValidacionUtil`. |
 | **Logback** | Configurado en `logback-spring.xml`; logging estructurado en consola + archivo (`logs/elpaisadigital.log`), usado en toda la capa de servicios. |
 
-## 3. Funcionalidad cubierta en este avance (~35-40%)
+## 3. Funcionalidad cubierta (100%)
 
 - ✅ RF01: Registro de pedidos digitales vinculados a una sede.
 - ✅ RF02: Descuento automático de inventario según el insumo principal asociado a cada plato (relación opcional producto→insumo, sin tabla intermedia).
+- ✅ RF03: Reservas online por sede, con validación de teléfono peruano y horario de atención, y flujo de confirmación/cancelación.
 - ✅ RF04: Reporte de ventas exportable a Excel.
+- ✅ RF05: Registro de asistencia (entrada/salida) del personal, con vista de historial para el ADMIN.
 - ✅ RNF01: Seguridad por roles y contraseñas cifradas.
-- 🔜 RF03 (reservas online), RF05 (asistencia de personal): planificados para el Avance Final.
 
 ## 4. Cómo ejecutar el proyecto
 
 Requisitos: JDK 17+, Maven 3.8+.
 
+El perfil por defecto (`application.properties`) usa **MySQL**, así que la base de datos `elpaisadb` debe existir antes de arrancar:
+
 ```bash
 mvn spring-boot:run
 ```
 
-La aplicación levanta con una base de datos **H2 en memoria** (no requiere instalar MySQL para la demo) y se pre-cargan datos de ejemplo al iniciar (ver `DataInitializer.java`).
+Para una demo rápida **sin instalar MySQL**, usar el perfil `h2` (base de datos en memoria, no persiste entre reinicios):
+
+```bash
+mvn spring-boot:run -Dspring-boot.run.profiles=h2
+```
+
+En ambos casos se pre-cargan datos de ejemplo al iniciar (ver `DataInitializer.java`).
 
 - URL: http://localhost:8080/login
 - Usuario admin: `admin` / `admin123`
 - Usuario cajero: `cajero1` / `cajero123`
 
-Para producción con MySQL, editar `src/main/resources/application.properties` (las líneas ya están comentadas y listas para descomentar).
-
 ## 5. Control de versiones (Git y GitHub)
 
-Ver `GUIA_GIT_GITHUB.md` para el paso a paso de cómo subir este repositorio a GitHub y la convención de commits usada por el equipo.
+El repositorio usa Git con commits descriptivos por funcionalidad (`feat:`, `fix:`, `test:`, `docs:`), visibles en el historial (`git log`).
 
 ## 6. Pruebas unitarias (TDD)
 
@@ -69,8 +76,13 @@ mvn test
 1. Venta exitosa con descuento correcto de stock.
 2. Venta rechazada por stock insuficiente (no debe alterar el inventario ni guardar la venta — atomicidad).
 3. Venta rechazada por no tener productos en el detalle.
+4. Venta de un producto sin insumo asociado (relación opcional).
 
-`ProductoServiceImplTest` cubre validaciones de precio y nombre.
+`ProductoServiceImplTest` e `InsumoServiceImplTest` cubren validaciones de precio, nombre y cálculo de stock bajo.
+
+`ReservaServiceImplTest` cubre la validación de teléfono peruano, horario de atención y anticipación mínima de la reserva.
+
+`UsuarioServiceImplTest` cubre el cifrado BCrypt de contraseñas y las reglas de autenticación (ver detalle en `INFORME_PRUEBAS.md`).
 
 ## 7. Referencias
 

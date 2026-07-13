@@ -24,6 +24,10 @@
                 <h3>Reservas</h3>
                 <p>Gestiona las reservas de mesa de todas las sedes.</p>
             </a>
+            <a th:href="@{/asistencia}" class="tarjeta">
+                <h3>Asistencia</h3>
+                <p>Marca tu entrada y salida del turno.</p>
+            </a>
             <a th:href="@{/productos}" class="tarjeta" sec:authorize="hasRole('ADMIN')">
                 <h3>Productos</h3>
                 <p>Administra la carta y sus precios.</p>

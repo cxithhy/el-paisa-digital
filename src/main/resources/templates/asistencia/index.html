@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Asistencia - El Paisa Digital</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="~{fragments/layout :: topbar}"></div>
+    <div class="contenedor">
+        <div class="encabezado-pagina">
+            <div>
+                <h1>Asistencia</h1>
+                <p>Marca tu entrada y salida del turno de hoy.</p>
+            </div>
+        </div>
+
+        <!-- Tarjeta de registro del día para el usuario que tiene la sesión abierta -->
+        <div class="formulario" style="margin-bottom:2rem;">
+            <div th:if="${registroHoy == null}">
+                <p style="margin-top:0;">Aún no has marcado tu entrada de hoy.</p>
+                <form th:action="@{/asistencia/entrada}" method="post">
+                    <button type="submit" class="btn">Marcar entrada</button>
+                </form>
+            </div>
+
+            <div th:if="${registroHoy != null and registroHoy.horaSalida == null}">
+                <p style="margin-top:0;">
+                    Entrada marcada a las
+                    <strong th:text="${#temporals.format(registroHoy.horaEntrada, 'HH:mm')}"></strong>.
+                    <span class="badge badge-ok">En curso</span>
+                </p>
+                <form th:action="@{/asistencia/salida}" method="post">
+                    <button type="submit" class="btn">Marcar salida</button>
+                </form>
+            </div>
+
+            <div th:if="${registroHoy != null and registroHoy.horaSalida != null}">
+                <p style="margin-top:0; margin-bottom:0;">
+                    Registro de hoy completo:
+                    entrada <strong th:text="${#temporals.format(registroHoy.horaEntrada, 'HH:mm')}"></strong>,
+                    salida <strong th:text="${#temporals.format(registroHoy.horaSalida, 'HH:mm')}"></strong>.
+                    <span class="badge badge-ok">Completo</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Solo el ADMIN ve el registro de todo el personal -->
+        <div th:if="${esAdmin}">
+            <div class="encabezado-pagina">
+                <div>
+                    <h2>Registro de todo el personal</h2>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>Usuario</th><th>Sede</th><th>Fecha</th><th>Entrada</th><th>Salida</th><th>Estado</th></tr>
+                </thead>
+                <tbody>
+                    <tr th:each="a : ${todas}">
+                        <td th:text="${a.usuario.username}"></td>
+                        <td th:text="${a.usuario.sede.nombre}"></td>
+                        <td th:text="${#temporals.format(a.fecha, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${a.horaEntrada != null ? #temporals.format(a.horaEntrada, 'HH:mm') : '-'}"></td>
+                        <td th:text="${a.horaSalida != null ? #temporals.format(a.horaSalida, 'HH:mm') : '-'}"></td>
+                        <td>
+                            <span th:if="${a.horaSalida != null}" class="badge badge-ok">Completo</span>
+                            <span th:if="${a.horaSalida == null}" class="badge badge-bajo">En curso</span>
+                        </td>
+                    </tr>
+                    <tr th:if="${todas.isEmpty()}">
+                        <td colspan="6" style="text-align:center; color:#5C6B6B;">Aún no hay registros de asistencia.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
