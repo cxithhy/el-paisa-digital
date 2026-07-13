@@ -13,9 +13,9 @@
 
     <groupId>com.elpaisa</groupId>
     <artifactId>elpaisadigital</artifactId>
-    <version>0.3.0-avance3</version>
+    <version>1.0.0</version>
     <name>El Paisa Digital</name>
-    <description>Sistema de Gestion y Plataforma Web Integral - Avance 3 (Curso Integrador I)</description>
+    <description>Sistema de Gestion y Plataforma Web Integral - Proyecto Final (Curso Integrador I)</description>
 
     <properties>
         <java.version>17</java.version>
@@ -150,6 +150,19 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <!-- Anexo "Documentacion de Codigo": genera el Javadoc en target/site/apidocs
+                 Ejecutar: mvn javadoc:javadoc  (requiere JDK completo, no solo JRE) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.3</version>
+                <configuration>
+                    <doclint>none</doclint>
+                    <show>private</show>
+                    <windowtitle>El Paisa Digital - Documentacion tecnica</windowtitle>
+                    <detectJavaApiLink>false</detectJavaApiLink>
                 </configuration>
             </plugin>
         </plugins>

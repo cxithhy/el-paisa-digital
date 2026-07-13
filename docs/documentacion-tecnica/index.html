@@ -1,0 +1,260 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<title>El Paisa Digital - Documentacion tecnica</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;max-width:900px;margin:40px auto;padding:0 20px;color:#222}
+h1{border-bottom:3px solid #D85A30;padding-bottom:8px}
+h2{color:#185FA5;margin-top:40px;border-bottom:1px solid #ddd;padding-bottom:4px}
+h3{color:#3B6D11;margin-top:24px}
+.pkg{color:#888;font-size:13px;font-family:monospace}
+.doc{background:#f7f7f5;border-left:3px solid #D85A30;padding:8px 14px;margin:6px 0 14px;white-space:pre-wrap;font-size:14px}
+.sig{font-family:monospace;background:#eee;padding:2px 6px;border-radius:4px;font-size:13px}
+.methoddoc{background:#f0f4fa;border-left:3px solid #378ADD;padding:6px 12px;margin:4px 0 12px;white-space:pre-wrap;font-size:13px}
+nav{background:#faeee7;padding:10px 16px;margin-bottom:30px;border-radius:6px}
+nav a{margin-right:14px;text-decoration:none;color:#993C1D}
+</style></head><body>
+<h1>El Paisa Digital &mdash; Documentacion tecnica (resumen)</h1>
+<p><em>Generado a partir de los comentarios Javadoc del codigo fuente. Para la documentacion oficial completa (todas las clases, jerarquias y enlaces cruzados), ejecutar <span class="sig">mvn javadoc:javadoc</span> con un JDK completo instalado &mdash; el plugin ya esta configurado en el pom.xml. El resultado queda en target/site/apidocs/index.html.</em></p>
+<nav>
+<a href="#ElPaisaDigitalApplication">ElPaisaDigitalApplication</a>
+<a href="#DataInitializer">DataInitializer</a>
+<a href="#SecurityConfig">SecurityConfig</a>
+<a href="#AsistenciaController">AsistenciaController</a>
+<a href="#AuthController">AuthController</a>
+<a href="#DashboardController">DashboardController</a>
+<a href="#InsumoController">InsumoController</a>
+<a href="#ProductoController">ProductoController</a>
+<a href="#ReporteController">ReporteController</a>
+<a href="#ReservaController">ReservaController</a>
+<a href="#VentaController">VentaController</a>
+<a href="#AsistenciaDao">AsistenciaDao</a>
+<a href="#GenericDao">GenericDao</a>
+<a href="#InsumoDao">InsumoDao</a>
+<a href="#ProductoDao">ProductoDao</a>
+<a href="#ReservaDao">ReservaDao</a>
+<a href="#SedeDao">SedeDao</a>
+<a href="#UsuarioDao">UsuarioDao</a>
+<a href="#VentaDao">VentaDao</a>
+<a href="#AsistenciaDaoImpl">AsistenciaDaoImpl</a>
+<a href="#GenericDaoImpl">GenericDaoImpl</a>
+<a href="#InsumoDaoImpl">InsumoDaoImpl</a>
+<a href="#ProductoDaoImpl">ProductoDaoImpl</a>
+<a href="#ReservaDaoImpl">ReservaDaoImpl</a>
+<a href="#SedeDaoImpl">SedeDaoImpl</a>
+<a href="#UsuarioDaoImpl">UsuarioDaoImpl</a>
+<a href="#VentaDaoImpl">VentaDaoImpl</a>
+<a href="#DetalleVentaRequest">DetalleVentaRequest</a>
+<a href="#VentaRequest">VentaRequest</a>
+<a href="#GlobalExceptionHandler">GlobalExceptionHandler</a>
+<a href="#RecursoNoEncontradoException">RecursoNoEncontradoException</a>
+<a href="#StockInsuficienteException">StockInsuficienteException</a>
+<a href="#Asistencia">Asistencia</a>
+<a href="#DetalleVenta">DetalleVenta</a>
+<a href="#Insumo">Insumo</a>
+<a href="#Producto">Producto</a>
+<a href="#Reserva">Reserva</a>
+<a href="#Rol">Rol</a>
+<a href="#Sede">Sede</a>
+<a href="#Usuario">Usuario</a>
+<a href="#Venta">Venta</a>
+<a href="#UsuarioPrincipal">UsuarioPrincipal</a>
+<a href="#AsistenciaService">AsistenciaService</a>
+<a href="#InsumoService">InsumoService</a>
+<a href="#ProductoService">ProductoService</a>
+<a href="#ReporteService">ReporteService</a>
+<a href="#ReservaService">ReservaService</a>
+<a href="#UsuarioService">UsuarioService</a>
+<a href="#VentaService">VentaService</a>
+<a href="#AsistenciaServiceImpl">AsistenciaServiceImpl</a>
+<a href="#InsumoServiceImpl">InsumoServiceImpl</a>
+<a href="#ProductoServiceImpl">ProductoServiceImpl</a>
+<a href="#ReporteServiceImpl">ReporteServiceImpl</a>
+<a href="#ReservaServiceImpl">ReservaServiceImpl</a>
+<a href="#UsuarioServiceImpl">UsuarioServiceImpl</a>
+<a href="#VentaServiceImpl">VentaServiceImpl</a>
+<a href="#ValidacionUtil">ValidacionUtil</a>
+</nav>
+<h2 id="ElPaisaDigitalApplication">ElPaisaDigitalApplication</h2>
+<div class="pkg">com.elpaisa</div>
+<div class="doc">Punto de entrada de la aplicacion &quot;El Paisa Digital&quot;.
+Arquitectura: MVC (Model-View-Controller) sobre Spring Boot + Thymeleaf,
+con capa DAO explicita para el acceso a datos y capa Service para la logica de negocio.</div>
+<h2 id="DataInitializer">DataInitializer</h2>
+<div class="pkg">com.elpaisa.config</div>
+<div class="doc">Carga datos iniciales de demostracion (sedes, roles, usuarios, insumos,
+productos y ventas de ejemplo) para poder exponer el sistema sin configurar
+datos a mano. Al ser el mismo codigo para todo el equipo, cualquier laptop
+que arranque el proyecto por primera vez contra una base de datos vacia
+termina con exactamente los mismos datos de demostracion.</div>
+<h2 id="SecurityConfig">SecurityConfig</h2>
+<div class="pkg">com.elpaisa.config</div>
+<div class="doc">RNF01 (Seguridad): acceso restringido por roles (Administrador, Cajero, Mozo)
+y contraseñas cifradas con BCrypt.</div>
+<h2 id="AsistenciaController">AsistenciaController</h2>
+<div class="pkg">com.elpaisa.controller</div>
+<h2 id="AuthController">AuthController</h2>
+<div class="pkg">com.elpaisa.controller</div>
+<h2 id="DashboardController">DashboardController</h2>
+<div class="pkg">com.elpaisa.controller</div>
+<h2 id="InsumoController">InsumoController</h2>
+<div class="pkg">com.elpaisa.controller</div>
+<h2 id="ProductoController">ProductoController</h2>
+<div class="pkg">com.elpaisa.controller</div>
+<h2 id="ReporteController">ReporteController</h2>
+<div class="pkg">com.elpaisa.controller</div>
+<div class="doc">RF04: descarga del reporte de ventas en Excel (Apache POI).</div>
+<h2 id="ReservaController">ReservaController</h2>
+<div class="pkg">com.elpaisa.controller</div>
+<h2 id="VentaController">VentaController</h2>
+<div class="pkg">com.elpaisa.controller</div>
+<h2 id="AsistenciaDao">AsistenciaDao</h2>
+<div class="pkg">com.elpaisa.dao</div>
+<h2 id="GenericDao">GenericDao</h2>
+<div class="pkg">com.elpaisa.dao</div>
+<div class="doc">Contrato generico del patron DAO.
+SOLID - ISP: interfaz pequeña y enfocada solo en operaciones de persistencia.
+SOLID - DIP: los Services dependen de esta abstraccion, no de una implementacion concreta.
+@param &lt;T&gt;  tipo de entidad
+@param &lt;ID&gt; tipo de la clave primaria</div>
+<h2 id="InsumoDao">InsumoDao</h2>
+<div class="pkg">com.elpaisa.dao</div>
+<h2 id="ProductoDao">ProductoDao</h2>
+<div class="pkg">com.elpaisa.dao</div>
+<h2 id="ReservaDao">ReservaDao</h2>
+<div class="pkg">com.elpaisa.dao</div>
+<h2 id="SedeDao">SedeDao</h2>
+<div class="pkg">com.elpaisa.dao</div>
+<h2 id="UsuarioDao">UsuarioDao</h2>
+<div class="pkg">com.elpaisa.dao</div>
+<h2 id="VentaDao">VentaDao</h2>
+<div class="pkg">com.elpaisa.dao</div>
+<h2 id="AsistenciaDaoImpl">AsistenciaDaoImpl</h2>
+<div class="pkg">com.elpaisa.dao.impl</div>
+<h2 id="GenericDaoImpl">GenericDaoImpl</h2>
+<div class="pkg">com.elpaisa.dao.impl</div>
+<div class="doc">Implementacion base del patron DAO usando JPA EntityManager directamente
+(en vez de delegar en Spring Data JPA), para dejar explicita la capa de acceso a datos.
+SOLID - OCP: las clases hijas (ProductoDaoImpl, InsumoDaoImpl, etc.) extienden
+este comportamiento sin necesidad de modificarlo.
+SOLID - LSP: cualquier DAO concreto puede sustituir a GenericDao sin romper el contrato.
+@param &lt;T&gt;  tipo de entidad
+@param &lt;ID&gt; tipo de la clave primaria</div>
+<h2 id="InsumoDaoImpl">InsumoDaoImpl</h2>
+<div class="pkg">com.elpaisa.dao.impl</div>
+<h2 id="ProductoDaoImpl">ProductoDaoImpl</h2>
+<div class="pkg">com.elpaisa.dao.impl</div>
+<h2 id="ReservaDaoImpl">ReservaDaoImpl</h2>
+<div class="pkg">com.elpaisa.dao.impl</div>
+<h3>listarTodasOrdenadas()</h3>
+<div class="sig">public List&lt;Reserva&gt; listarTodasOrdenadas()</div>
+<div class="methoddoc">Muestra TODAS las reservas (pasadas y futuras), no solo las proximas.
+Se agrego porque el personal necesita ver el historial completo, no solo
+las pendientes de confirmar - de lo contrario una reserva ya pasada
+&quot;desaparece&quot; de la vista aunque siga existiendo en la base de datos.</div>
+<h2 id="SedeDaoImpl">SedeDaoImpl</h2>
+<div class="pkg">com.elpaisa.dao.impl</div>
+<h2 id="UsuarioDaoImpl">UsuarioDaoImpl</h2>
+<div class="pkg">com.elpaisa.dao.impl</div>
+<h2 id="VentaDaoImpl">VentaDaoImpl</h2>
+<div class="pkg">com.elpaisa.dao.impl</div>
+<h2 id="DetalleVentaRequest">DetalleVentaRequest</h2>
+<div class="pkg">com.elpaisa.dto</div>
+<div class="doc">DTO: linea de pedido que llega desde el formulario de &quot;Nueva Venta&quot;.</div>
+<h2 id="VentaRequest">VentaRequest</h2>
+<div class="pkg">com.elpaisa.dto</div>
+<div class="doc">DTO: cabecera + detalle de una venta nueva, tal como la arma el mozo/cajero en pantalla.</div>
+<h2 id="GlobalExceptionHandler">GlobalExceptionHandler</h2>
+<div class="pkg">com.elpaisa.exception</div>
+<div class="doc">Manejo centralizado de errores de negocio para toda la capa de controllers (MVC).
+Usa Logback (via SLF4J) para dejar trazabilidad de los errores.</div>
+<h2 id="RecursoNoEncontradoException">RecursoNoEncontradoException</h2>
+<div class="pkg">com.elpaisa.exception</div>
+<h2 id="StockInsuficienteException">StockInsuficienteException</h2>
+<div class="pkg">com.elpaisa.exception</div>
+<div class="doc">Se lanza cuando una venta requiere mas cantidad de un insumo
+de la que hay disponible en stock (evita mermas y ventas invalidas).</div>
+<h2 id="Asistencia">Asistencia</h2>
+<div class="pkg">com.elpaisa.model</div>
+<div class="doc">RF05: Registro de asistencia (entrada/salida) del personal por dia.</div>
+<h2 id="DetalleVenta">DetalleVenta</h2>
+<div class="pkg">com.elpaisa.model</div>
+<h2 id="Insumo">Insumo</h2>
+<div class="pkg">com.elpaisa.model</div>
+<h2 id="Producto">Producto</h2>
+<div class="pkg">com.elpaisa.model</div>
+<h2 id="Reserva">Reserva</h2>
+<div class="pkg">com.elpaisa.model</div>
+<div class="doc">RF03: Reserva de mesa hecha por un cliente para una sede y fecha/hora especifica.</div>
+<h2 id="Rol">Rol</h2>
+<div class="pkg">com.elpaisa.model</div>
+<h2 id="Sede">Sede</h2>
+<div class="pkg">com.elpaisa.model</div>
+<h2 id="Usuario">Usuario</h2>
+<div class="pkg">com.elpaisa.model</div>
+<h2 id="Venta">Venta</h2>
+<div class="pkg">com.elpaisa.model</div>
+<h3>getTotalItems()</h3>
+<div class="sig">public int getTotalItems()</div>
+<div class="methoddoc">Cantidad total de platos vendidos (suma las cantidades de cada linea),
+a diferencia de detalle.size() que solo cuenta cuantos productos distintos hay.
+No es un campo persistido, se calcula al vuelo.</div>
+<h2 id="UsuarioPrincipal">UsuarioPrincipal</h2>
+<div class="pkg">com.elpaisa.security</div>
+<div class="doc">Adaptador entre nuestra entidad Usuario y el UserDetails que exige Spring Security.
+Permite exponer datos adicionales (sede, nombre del rol) en la sesion autenticada,
+para poder mostrarlos en la interfaz (navbar) sin tener que volver a consultar
+la base de datos en cada pantalla.</div>
+<h2 id="AsistenciaService">AsistenciaService</h2>
+<div class="pkg">com.elpaisa.service</div>
+<h2 id="InsumoService">InsumoService</h2>
+<div class="pkg">com.elpaisa.service</div>
+<h2 id="ProductoService">ProductoService</h2>
+<div class="pkg">com.elpaisa.service</div>
+<h2 id="ReporteService">ReporteService</h2>
+<div class="pkg">com.elpaisa.service</div>
+<h2 id="ReservaService">ReservaService</h2>
+<div class="pkg">com.elpaisa.service</div>
+<h2 id="UsuarioService">UsuarioService</h2>
+<div class="pkg">com.elpaisa.service</div>
+<h2 id="VentaService">VentaService</h2>
+<div class="pkg">com.elpaisa.service</div>
+<h2 id="AsistenciaServiceImpl">AsistenciaServiceImpl</h2>
+<div class="pkg">com.elpaisa.service.impl</div>
+<div class="doc">RF05: control de asistencia. Cada usuario marca su propia entrada/salida;
+un mismo dia solo puede tener un registro (idempotente por usuario+fecha).</div>
+<h2 id="InsumoServiceImpl">InsumoServiceImpl</h2>
+<div class="pkg">com.elpaisa.service.impl</div>
+<h2 id="ProductoServiceImpl">ProductoServiceImpl</h2>
+<div class="pkg">com.elpaisa.service.impl</div>
+<div class="doc">SOLID - SRP: esta clase solo orquesta reglas de negocio de Producto,
+la persistencia se delega al ProductoDao (SOLID - DIP: se inyecta la abstraccion).</div>
+<h2 id="ReporteServiceImpl">ReporteServiceImpl</h2>
+<div class="pkg">com.elpaisa.service.impl</div>
+<div class="doc">RF04: Generacion de reportes de ventas exportables a Excel usando Apache POI,
+con la identidad visual de la marca (logo, colores) y un resumen del periodo.</div>
+<h2 id="ReservaServiceImpl">ReservaServiceImpl</h2>
+<div class="pkg">com.elpaisa.service.impl</div>
+<h2 id="UsuarioServiceImpl">UsuarioServiceImpl</h2>
+<div class="pkg">com.elpaisa.service.impl</div>
+<div class="doc">RNF01 (Seguridad): autentica contra la tabla Usuario, con contraseñas
+cifradas via BCrypt (nunca en texto plano) y acceso restringido por rol.</div>
+<h2 id="VentaServiceImpl">VentaServiceImpl</h2>
+<div class="pkg">com.elpaisa.service.impl</div>
+<div class="doc">Implementa RF01 (registrar pedido) + RF02 (descuento automatico de inventario
+segun el insumo principal asociado al plato vendido).
+SOLID - SRP: esta clase solo se ocupa de la logica de negocio de &quot;vender&quot;;
+no sabe como se persiste nada en detalle (eso es responsabilidad de los DAO).
+SOLID - DIP: depende de las abstracciones VentaDao/ProductoDao/InsumoDao,
+no de sus implementaciones concretas -&gt; permite testear con mocks (TDD).</div>
+<h2 id="ValidacionUtil">ValidacionUtil</h2>
+<div class="pkg">com.elpaisa.util</div>
+<div class="doc">Utilidad centralizada de validaciones (SOLID - SRP: una unica responsabilidad,
+validar datos de entrada antes de que lleguen a la capa de negocio).
+Usa Google Guava (Preconditions) y Apache Commons Lang3 (StringUtils).</div>
+<h3>validarTelefonoPeruMovil()</h3>
+<div class="sig">public static void validarTelefonoPeruMovil(String telefono, String nombreCampo)</div>
+<div class="methoddoc">Valida que el telefono sea un celular peruano real: empieza en 9, 9 digitos exactos.</div>
+<h3>validarFechaHoraReserva()</h3>
+<div class="sig">public static void validarFechaHoraReserva(LocalDateTime fechaHora, LocalTime apertura, LocalTime cierre)</div>
+<div class="methoddoc">Valida que la fecha/hora de una reserva sea al menos un dia despues de hoy,
+y que caiga dentro del horario de atencion (que puede variar segun la sede).</div>
+</body></html>
