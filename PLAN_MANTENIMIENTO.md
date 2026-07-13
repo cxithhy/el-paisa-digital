@@ -61,7 +61,7 @@ schtasks /delete /tn "Backup El Paisa Digital" /f
 
 ## 3. Rotación y limpieza de logs
 
-Ya configurada desde el Avance 3 en `logback-spring.xml` — **no requiere intervención manual**:
+Ya configurada en `logback-spring.xml` — **no requiere intervención manual**:
 - Cada día se crea un archivo de log nuevo (`elpaisadigital.log`)
 - Se conservan automáticamente los últimos **15 días** de logs; los más antiguos se eliminan solos
 

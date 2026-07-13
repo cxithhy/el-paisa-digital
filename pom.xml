@@ -13,9 +13,9 @@
 
     <groupId>com.elpaisa</groupId>
     <artifactId>elpaisadigital</artifactId>
-    <version>0.3.0-avance3</version>
+    <version>1.0.0</version>
     <name>El Paisa Digital</name>
-    <description>Sistema de Gestion y Plataforma Web Integral - Avance 3 (Curso Integrador I)</description>
+    <description>Sistema de Gestion y Plataforma Web Integral - Proyecto Final (Curso Integrador I)</description>
 
     <properties>
         <java.version>17</java.version>
