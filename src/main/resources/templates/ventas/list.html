@@ -2,6 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ventas - El Paisa Digital</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
@@ -31,20 +32,22 @@
             </div>
         </div>
 
+        <div class="tabla-responsive">
         <table>
             <thead>
                 <tr><th>ID</th><th>Fecha</th><th>Sede</th><th>Items</th><th>Total</th></tr>
             </thead>
             <tbody>
                 <tr th:each="v : ${ventas}">
-                    <td th:text="${v.idVenta}"></td>
-                    <td th:text="${#temporals.format(v.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
-                    <td th:text="${v.sede.nombre}"></td>
-                    <td th:text="${v.totalItems}"></td>
-                    <td th:text="'S/ ' + ${v.total}"></td>
+                    <td data-etiqueta="ID" th:text="${v.idVenta}"></td>
+                    <td data-etiqueta="Fecha" th:text="${#temporals.format(v.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td data-etiqueta="Sede" th:text="${v.sede.nombre}"></td>
+                    <td data-etiqueta="Items" th:text="${v.totalItems}"></td>
+                    <td data-etiqueta="Total" th:text="'S/ ' + ${v.total}"></td>
                 </tr>
             </tbody>
         </table>
+        </div>
     </div>
 </body>
 </html>

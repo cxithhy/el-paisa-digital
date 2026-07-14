@@ -2,6 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asistencia - El Paisa Digital</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
@@ -52,18 +53,19 @@
                     <h2>Registro de todo el personal</h2>
                 </div>
             </div>
+            <div class="tabla-responsive">
             <table>
                 <thead>
                     <tr><th>Usuario</th><th>Sede</th><th>Fecha</th><th>Entrada</th><th>Salida</th><th>Estado</th></tr>
                 </thead>
                 <tbody>
                     <tr th:each="a : ${todas}">
-                        <td th:text="${a.usuario.username}"></td>
-                        <td th:text="${a.usuario.sede.nombre}"></td>
-                        <td th:text="${#temporals.format(a.fecha, 'dd/MM/yyyy')}"></td>
-                        <td th:text="${a.horaEntrada != null ? #temporals.format(a.horaEntrada, 'HH:mm') : '-'}"></td>
-                        <td th:text="${a.horaSalida != null ? #temporals.format(a.horaSalida, 'HH:mm') : '-'}"></td>
-                        <td>
+                        <td data-etiqueta="Usuario" th:text="${a.usuario.username}"></td>
+                        <td data-etiqueta="Sede" th:text="${a.usuario.sede.nombre}"></td>
+                        <td data-etiqueta="Fecha" th:text="${#temporals.format(a.fecha, 'dd/MM/yyyy')}"></td>
+                        <td data-etiqueta="Entrada" th:text="${a.horaEntrada != null ? #temporals.format(a.horaEntrada, 'HH:mm') : '-'}"></td>
+                        <td data-etiqueta="Salida" th:text="${a.horaSalida != null ? #temporals.format(a.horaSalida, 'HH:mm') : '-'}"></td>
+                        <td data-etiqueta="Estado">
                             <span th:if="${a.horaSalida != null}" class="badge badge-ok">Completo</span>
                             <span th:if="${a.horaSalida == null}" class="badge badge-bajo">En curso</span>
                         </td>
@@ -73,6 +75,7 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 </body>

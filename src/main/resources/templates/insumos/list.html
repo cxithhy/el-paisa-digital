@@ -2,6 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insumos - El Paisa Digital</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
@@ -16,23 +17,25 @@
             <a th:href="@{/insumos/nuevo}" class="btn">+ Nuevo insumo</a>
         </div>
 
+        <div class="tabla-responsive">
         <table>
             <thead>
                 <tr><th>ID</th><th>Insumo</th><th>Stock actual</th><th>Stock minimo</th><th>Estado</th></tr>
             </thead>
             <tbody>
                 <tr th:each="i : ${insumos}">
-                    <td th:text="${i.idInsumo}"></td>
-                    <td th:text="${i.nombre}"></td>
-                    <td th:text="${i.stockActual}"></td>
-                    <td th:text="${i.stockMin}"></td>
-                    <td>
+                    <td data-etiqueta="ID" th:text="${i.idInsumo}"></td>
+                    <td data-etiqueta="Insumo" th:text="${i.nombre}"></td>
+                    <td data-etiqueta="Stock actual" th:text="${i.stockActual}"></td>
+                    <td data-etiqueta="Stock minimo" th:text="${i.stockMin}"></td>
+                    <td data-etiqueta="Estado">
                         <span th:if="${i.stockActual.compareTo(i.stockMin)} <= 0" class="badge badge-bajo">Stock bajo</span>
                         <span th:unless="${i.stockActual.compareTo(i.stockMin)} <= 0" class="badge badge-ok">OK</span>
                     </td>
                 </tr>
             </tbody>
         </table>
+        </div>
     </div>
 </body>
 </html>

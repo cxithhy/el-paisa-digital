@@ -2,6 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos - El Paisa Digital</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
@@ -16,16 +17,17 @@
             <a th:href="@{/productos/nuevo}" class="btn">+ Nuevo producto</a>
         </div>
 
+        <div class="tabla-responsive">
         <table>
             <thead>
                 <tr><th>ID</th><th>Nombre</th><th>Precio</th><th></th></tr>
             </thead>
             <tbody>
                 <tr th:each="p : ${productos}">
-                    <td th:text="${p.idProducto}"></td>
-                    <td th:text="${p.nombre}"></td>
-                    <td th:text="'S/ ' + ${p.precio}"></td>
-                    <td>
+                    <td data-etiqueta="ID" th:text="${p.idProducto}"></td>
+                    <td data-etiqueta="Nombre" th:text="${p.nombre}"></td>
+                    <td data-etiqueta="Precio" th:text="'S/ ' + ${p.precio}"></td>
+                    <td data-etiqueta="Acciones">
                         <a th:href="@{'/productos/editar/' + ${p.idProducto}}" class="btn btn-secundario">Editar</a>
                         <a th:href="@{'/productos/eliminar/' + ${p.idProducto}}" class="btn btn-secundario"
                            onclick="return confirm('¿Eliminar este producto?');">Eliminar</a>
@@ -33,6 +35,7 @@
                 </tr>
             </tbody>
         </table>
+        </div>
     </div>
 </body>
 </html>

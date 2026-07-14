@@ -4,7 +4,13 @@
         <img th:src="@{/img/logo-elpaisa.png}" alt="El Paisa Restaurant Turístico" class="logo-marca">
     </a>
 
-    <nav class="nav-principal">
+    <button type="button" class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="navPrincipal">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+    </button>
+
+    <nav class="nav-principal" id="navPrincipal">
         <a th:href="@{/dashboard}"><span>Inicio</span></a>
         <a th:href="@{/ventas/nueva}"><span>Nueva Venta</span></a>
         <a th:href="@{/ventas}"><span>Ventas</span></a>
@@ -50,6 +56,23 @@
         var elAvatar = document.getElementById('sesionAvatar');
         if (elNombre && elAvatar && elNombre.textContent.trim().length > 0) {
             elAvatar.textContent = elNombre.textContent.trim().charAt(0).toUpperCase();
+        }
+
+        // Menu hamburguesa: se muestra solo en tablet/movil via CSS (ver style.css).
+        // Al tocar un enlace del menu, se cierra automaticamente.
+        var btnMenu = document.getElementById('menuToggle');
+        var navPrincipal = document.getElementById('navPrincipal');
+        if (btnMenu && navPrincipal) {
+            btnMenu.addEventListener('click', function () {
+                var abierto = navPrincipal.classList.toggle('nav-abierto');
+                btnMenu.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+            });
+            navPrincipal.querySelectorAll('a').forEach(function (enlace) {
+                enlace.addEventListener('click', function () {
+                    navPrincipal.classList.remove('nav-abierto');
+                    btnMenu.setAttribute('aria-expanded', 'false');
+                });
+            });
         }
     </script>
 </div>

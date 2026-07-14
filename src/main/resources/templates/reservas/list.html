@@ -2,6 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservas - El Paisa Digital</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
@@ -11,7 +12,7 @@
         <div class="encabezado-pagina">
             <div>
                 <h1>Reservas</h1>
-                <p>Historial completo de reservas (pasadas y futuras).</p>
+                <p>Historial completo de reservas (pasadas y futuras). Toca una fila para ver los detalles y las observaciones.</p>
             </div>
             <a th:href="@{/reservas/nueva}" class="btn">+ Nueva reserva</a>
         </div>
@@ -22,29 +23,61 @@
             <span style="color:#8A9494;">(se mantienen guardadas en el sistema, solo se ocultan de esta vista por defecto)</span>
         </label>
 
+        <div class="tabla-responsive">
         <table>
             <thead>
                 <tr><th>Cliente</th><th>Telefono</th><th>Sede</th><th>Fecha y hora</th><th>Personas</th><th>Estado</th><th></th></tr>
             </thead>
             <tbody>
-                <tr th:each="r : ${reservas}" th:classappend="${r.estado == 'CANCELADA'} ? 'fila-cancelada'">
-                    <td th:text="${r.nombreCliente}"></td>
-                    <td th:text="${r.telefonoCliente}"></td>
-                    <td th:text="${r.sede.nombre}"></td>
-                    <td th:text="${#temporals.format(r.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
-                    <td th:text="${r.numeroPersonas}"></td>
-                    <td>
+                <tr th:each="r : ${reservas}"
+                    th:classappend="${r.estado == 'CANCELADA'} ? 'fila-cancelada'"
+                    class="fila-reserva"
+                    th:attr="data-cliente=${r.nombreCliente},
+                              data-telefono=${r.telefonoCliente},
+                              data-sede=${r.sede.nombre},
+                              data-fecha=${#temporals.format(r.fechaHora, 'dd/MM/yyyy HH:mm')},
+                              data-personas=${r.numeroPersonas},
+                              data-estado=${r.estado},
+                              data-observaciones=${r.observaciones != null and !r.observaciones.isEmpty() ? r.observaciones : 'Sin observaciones registradas para esta reserva.'}">
+                    <td data-etiqueta="Cliente" th:text="${r.nombreCliente}"></td>
+                    <td data-etiqueta="Telefono" th:text="${r.telefonoCliente}"></td>
+                    <td data-etiqueta="Sede" th:text="${r.sede.nombre}"></td>
+                    <td data-etiqueta="Fecha y hora" th:text="${#temporals.format(r.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td data-etiqueta="Personas" th:text="${r.numeroPersonas}"></td>
+                    <td data-etiqueta="Estado">
                         <span th:if="${r.estado == 'PENDIENTE'}" class="badge badge-bajo">Pendiente</span>
                         <span th:if="${r.estado == 'CONFIRMADA'}" class="badge badge-ok">Confirmada</span>
                         <span th:if="${r.estado == 'CANCELADA'}" class="badge" style="background:#eee;color:#888">Cancelada</span>
                     </td>
-                    <td>
-                        <a th:if="${r.estado == 'PENDIENTE'}" th:href="@{'/reservas/confirmar/' + ${r.idReserva}}" class="btn btn-secundario">Confirmar</a>
-                        <a th:if="${r.estado != 'CANCELADA'}" th:href="@{'/reservas/cancelar/' + ${r.idReserva}}" class="btn btn-secundario">Cancelar</a>
+                    <td data-etiqueta="Acciones" class="celda-acciones">
+                        <a th:if="${r.estado == 'PENDIENTE'}" th:href="@{'/reservas/confirmar/' + ${r.idReserva}}" class="btn btn-secundario" onclick="event.stopPropagation()">Confirmar</a>
+                        <a th:if="${r.estado != 'CANCELADA'}" th:href="@{'/reservas/cancelar/' + ${r.idReserva}}" class="btn btn-secundario" onclick="event.stopPropagation()">Cancelar</a>
                     </td>
                 </tr>
             </tbody>
         </table>
+        </div>
+    </div>
+
+    <!-- Modal de detalle de la reserva (incluye observaciones, que no caben en la tabla) -->
+    <div id="modalReserva" class="modal-fondo" onclick="cerrarModalSiEsFondo(event)">
+        <div class="modal-caja">
+            <div class="modal-cabecera">
+                <h2 id="modalCliente">Cliente</h2>
+                <button type="button" class="modal-cerrar" onclick="cerrarModal()" aria-label="Cerrar">&times;</button>
+            </div>
+            <div class="modal-cuerpo">
+                <div class="modal-fila"><span>Telefono</span><strong id="modalTelefono"></strong></div>
+                <div class="modal-fila"><span>Sede</span><strong id="modalSede"></strong></div>
+                <div class="modal-fila"><span>Fecha y hora</span><strong id="modalFecha"></strong></div>
+                <div class="modal-fila"><span>Personas</span><strong id="modalPersonas"></strong></div>
+                <div class="modal-fila"><span>Estado</span><strong id="modalEstado"></strong></div>
+                <div class="modal-observaciones">
+                    <span>Observaciones</span>
+                    <p id="modalObservaciones"></p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -57,6 +90,32 @@
             });
         }
         filtrarCanceladas();
+
+        // Modal de detalle: se abre al tocar/hacer clic en cualquier parte de la fila
+        // que no sea un boton de accion (Confirmar/Cancelar detienen la propagacion arriba).
+        var modal = document.getElementById('modalReserva');
+        document.querySelectorAll('.fila-reserva').forEach(function (fila) {
+            fila.addEventListener('click', function () {
+                document.getElementById('modalCliente').textContent = fila.dataset.cliente;
+                document.getElementById('modalTelefono').textContent = fila.dataset.telefono;
+                document.getElementById('modalSede').textContent = fila.dataset.sede;
+                document.getElementById('modalFecha').textContent = fila.dataset.fecha;
+                document.getElementById('modalPersonas').textContent = fila.dataset.personas;
+                document.getElementById('modalEstado').textContent = fila.dataset.estado;
+                document.getElementById('modalObservaciones').textContent = fila.dataset.observaciones;
+                modal.classList.add('modal-visible');
+            });
+        });
+
+        function cerrarModal() {
+            modal.classList.remove('modal-visible');
+        }
+        function cerrarModalSiEsFondo(evento) {
+            if (evento.target === modal) cerrarModal();
+        }
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') cerrarModal();
+        });
     </script>
 </body>
 </html>
